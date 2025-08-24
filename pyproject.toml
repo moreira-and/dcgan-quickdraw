@@ -5,7 +5,7 @@ build-backend = "flit_core.buildapi"
 [project]
 name = "src"
 version = "0.0.1"
-description = "Implementation of a Generative Adversarial Network (GAN) to create synthetic images from Google\u2019s Quick Draw dataset. This project explores adversarial training, dataset preprocessing, and critical evaluation of generative models."
+description = "Implementation of a Deep Convolutional Generative Adversarial Network (DCGAN) to create synthetic images from Google\u2019s Quick Draw dataset. This project explores adversarial training, dataset preprocessing, and critical evaluation of generative models."
 authors = [
   { name = "moreira-and" },
 ]

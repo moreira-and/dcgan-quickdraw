@@ -3,7 +3,7 @@ import time
 from tqdm import tqdm
 import typer
 
-from src.config import RAW_DATA_DIR, PROCESSED_DATA_DIR
+from src.config import RAW_DATA_DIR, PROCESSED_DATA_DIR, params
 
 import torch
 from torchvision import datasets, transforms
@@ -21,9 +21,9 @@ def main():
     # Transform: resize + tensor + normalize
     transform = transforms.Compose(
         [
-            transforms.Resize((28, 28)),
+            transforms.Resize((params.dataset.image_size, params.dataset.image_size)),
+            transforms.Grayscale(num_output_channels=1),
             transforms.ToTensor(),
-            transforms.Normalize((0.5,), (0.5,)),  # [-1,1]
         ]
     )
 

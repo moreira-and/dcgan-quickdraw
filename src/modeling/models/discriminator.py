@@ -25,7 +25,7 @@ class Discriminator(nn.Module):
             nn.Conv2d(128, 128, kernel_size=3, stride=1, padding="same"),
             nn.ReLU(),
             nn.Dropout2d(0.4),
-            nn.Flatten(),
+            nn.Flatten(),  # converts a multidimensional tensor into a 1D vector
             nn.Linear(128 * 4 * 4, 1),
         )
 

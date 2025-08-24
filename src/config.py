@@ -47,9 +47,9 @@ def dict_to_namespace(d: dict) -> SimpleNamespace:
 
 
 with open(CONFIG_FILE, "r") as f:
-    cfg_dict = yaml.safe_load(f)
+    params_dict = yaml.safe_load(f)
 
-cfg = dict_to_namespace(cfg_dict)
+params = dict_to_namespace(params_dict)
 # -----------------------------------------
 
 # If tqdm is installed, configure loguru with tqdm.write

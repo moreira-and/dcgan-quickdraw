@@ -1,14 +1,14 @@
 import torch
-from src.config import cfg, device
+from src.config import params, device
 from src.utils.noise import noise
 from src.modeling.models import Generator, Discriminator
 
 
 def generate_image():
-    generator = Generator(cfg.model.LATENT_DIM).to(device)
+    generator = Generator(params.model.latent_dim).to(device)
     generator.eval()
     with torch.no_grad():
-        img = generator(noise(1, cfg.model.LATENT_DIM).to(device))
+        img = generator(noise(1, params.model.latent_dim).to(device))
     return img
 
 

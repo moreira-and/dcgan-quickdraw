@@ -7,7 +7,9 @@ import time
 
 import typer
 
-from src.config import MODELS_DIR, PROCESSED_DATA_DIR
+from src.config import MODELS_DIR, PROCESSED_DATA_DIR, params
+from src.modeling.models import Generator, Discriminator
+from src.modeling.trainers import DCGANTrainer
 
 import torch
 from torch.utils.data import TensorDataset, DataLoader
@@ -18,7 +20,7 @@ app = typer.Typer()
 @app.command()
 def main(
     # -----------------------------------------
-    model_path: Path = MODELS_DIR / "model.pkl",
+    artifact_name: Path = "gan_artifact.pth",
     # -----------------------------------------
 ):
     # -----------------------------------------
@@ -46,12 +48,24 @@ def main(
     dataset = TensorDataset(all_imgs, all_labels)
 
     # DataLoader para treino
-    loader = DataLoader(dataset, batch_size=32, shuffle=True)
+    loader = DataLoader(dataset, batch_size=params.dataset.batch_size, shuffle=True)
 
-    # Teste: imprimir forma do primeiro batch
-    for batch_imgs, batch_labels in loader:
-        print(batch_imgs.shape, batch_labels.shape)
-        break
+    # -----------------------------------------
+
+    generator_instance = Generator(params.model.generator.latent_dim)
+
+    discriminator_instance = Discriminator()
+
+    DCGANTrainer_instance = DCGANTrainer(generator_instance, discriminator_instance)
+
+    # -----------------------------------------
+
+    DCGANTrainer_instance.train(
+        loader, epochs=params.train.epochs, num_classes=len(torch.unique(all_labels))
+    )
+
+    # Salvar os modelos treinados
+    DCGANTrainer_instance.save_models(artifact_name)
 
     # -----------------------------------------
     elapsed_time = time.time() - start_time

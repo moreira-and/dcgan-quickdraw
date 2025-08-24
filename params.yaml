@@ -1,10 +1,13 @@
 dataset:
-  BATCH_SIZE : 128
-  IMAGE_SIZE: 28
+  batch_size : 32
+  image_size: 28
 
 model:
-  LATENT_DIM : 100
+  generator:
+    latent_dim : 100
+    lr: 0.0004
+  discriminator:
+    lr: 0.0008
 
-training:
-  lr: 0.0002
+train:
   epochs: 50

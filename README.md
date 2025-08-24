@@ -6,6 +6,8 @@
 
 Implementation of a Generative Adversarial Network (GAN) to create synthetic images from Google’s Quick Draw dataset. This project explores adversarial training, dataset preprocessing, and critical evaluation of generative models.
 
+source: [google.quickdraw.coffee_cup](https://quickdraw.withgoogle.com/data/coffee_cup)
+
 ---
 
 ## 🛠️ Prerequisites
@@ -59,7 +61,7 @@ python -m venv .venv
 This project uses `pyproject.toml` with the `flit` backend. To install it:
 
 ```bash
-pip install .
+pip install -e .
 ```
 
 ---

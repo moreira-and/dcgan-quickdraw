@@ -3,7 +3,7 @@ requires = ["flit_core >=3.2,<4"]
 build-backend = "flit_core.buildapi"
 
 [project]
-name = "scr"
+name = "src"
 version = "0.0.1"
 description = "Implementation of a Generative Adversarial Network (GAN) to create synthetic images from Google\u2019s Quick Draw dataset. This project explores adversarial training, dataset preprocessing, and critical evaluation of generative models."
 authors = [
@@ -18,6 +18,7 @@ classifiers = [
 dependencies = [
     "black",
     "flake8",
+    "flake8-black",
     "ipython",
     "isort",
     "jupyterlab",
@@ -31,6 +32,7 @@ dependencies = [
     "pytest",
     "python-dotenv",
     "scikit-learn",
+    "quickdraw",
     "torch",
     "torchvision",
     "tqdm",
@@ -50,7 +52,7 @@ exclude = '''
 
 [tool.isort]
 profile = "black"
-known_first_party = ["scr"]
+known_first_party = ["src"]
 force_sort_within_sections = true
 
 

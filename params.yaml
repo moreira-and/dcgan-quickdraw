@@ -1,0 +1,10 @@
+dataset:
+  BATCH_SIZE : 128
+  IMAGE_SIZE: 28
+
+model:
+  LATENT_DIM : 100
+
+training:
+  lr: 0.0002
+  epochs: 50

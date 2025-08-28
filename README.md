@@ -1,9 +1,9 @@
-# dcgan-quickdraw
+# gan-quickdraw
 
 <a target="_blank" href="https://cookiecutter-data-science.drivendata.org/">
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
 </a>
-Implementation of a Deep Convolutional Generative Adversarial Network (DCGAN) to create synthetic images from Google’s Quick Draw dataset. This project explores adversarial training, dataset preprocessing, and critical evaluation of generative models.
+Implementation of a Generative Adversarial Network (DCGAN) to create synthetic images from Google’s Quick Draw dataset. This project explores adversarial training, dataset preprocessing, and critical evaluation of generative models.
 
 source: [google.quickdraw.coffee_cup](https://quickdraw.withgoogle.com/data/coffee_cup)
 

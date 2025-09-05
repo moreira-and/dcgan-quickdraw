@@ -31,10 +31,6 @@ class DCGANTrainer:
     def _train_discriminator(self, real_imgs):
 
         self.d_optimizer.zero_grad()
-        # x_train = x_train.unsqueeze(1)
-
-        # Mover as imagens reais para o dispositivo correto (CPU ou GPU)
-        # real_imgs = x_train.to(device)
 
         batch_size = real_imgs.size(0)
 

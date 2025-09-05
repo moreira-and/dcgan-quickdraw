@@ -20,7 +20,7 @@ app = typer.Typer()
 @app.command()
 def main(
     # -----------------------------------------
-    artifact_name: Path = "gan_artifact.pth",
+    artifact_name: str = "gan_artifact.pth",
     # -----------------------------------------
 ):
     # -----------------------------------------

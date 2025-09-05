@@ -3,7 +3,7 @@
 #################################################################################
 
 PROJECT_NAME = quickdraw-gan-generator
-PYTHON_VERSION = 3.13
+PYTHON_VERSION = 3.10
 PYTHON_INTERPRETER = python
 
 #################################################################################
@@ -14,7 +14,7 @@ PYTHON_INTERPRETER = python
 ## Install Python dependencies
 .PHONY: requirements
 requirements:
-	pip install -e .
+	poetry install
 	
 
 
@@ -29,15 +29,15 @@ clean:
 ## Lint using flake8, black, and isort (use `make format` to do formatting)
 .PHONY: lint
 lint:
-	flake8 scr
-	isort --check --diff scr
-	black --check scr
+	flake8 src
+	isort --check --diff src
+	black --check src
 
 ## Format source code with black
 .PHONY: format
 format:
-	isort scr
-	black scr
+	isort src
+	black src
 
 
 
@@ -50,9 +50,11 @@ test:
 ## Set up Python interpreter environment
 .PHONY: create_environment
 create_environment:
-	@bash -c "if [ ! -z `which virtualenvwrapper.sh` ]; then source `which virtualenvwrapper.sh`; mkvirtualenv $(PROJECT_NAME) --python=$(PYTHON_INTERPRETER); else mkvirtualenv.bat $(PROJECT_NAME) --python=$(PYTHON_INTERPRETER); fi"
-	@echo ">>> New virtualenv created. Activate with:\nworkon $(PROJECT_NAME)"
-	
+	poetry env use $(PYTHON_VERSION)
+	@echo ">>> Poetry environment created. Activate with: "
+	@echo '$$(poetry env activate)'
+	@echo ">>> Or run commands with:\npoetry run <command>"
+
 
 
 
@@ -64,7 +66,7 @@ create_environment:
 ## Make dataset
 .PHONY: data
 data: requirements
-	$(PYTHON_INTERPRETER) scr/dataset.py
+	$(PYTHON_INTERPRETER) src/dataset.py
 
 
 #################################################################################

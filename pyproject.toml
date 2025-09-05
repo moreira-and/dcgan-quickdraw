@@ -1,11 +1,11 @@
 [build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "src"
 version = "0.0.1"
-description = "Implementation of a Deep Convolutional Generative Adversarial Network (DCGAN) to create synthetic images from Google\u2019s Quick Draw dataset. This project explores adversarial training, dataset preprocessing, and critical evaluation of generative models."
+description = "Implementation of a Generative Adversarial Network (GAN) to create synthetic images from Google\\u2019s Quick Draw dataset. This project explores adversarial training, dataset preprocessing, and critical evaluation of generative models."
 authors = [
   { name = "moreira-and" },
 ]
@@ -18,27 +18,24 @@ classifiers = [
 dependencies = [
     "black",
     "flake8",
-    "flake8-black",
-    "ipython",
     "isort",
-    "jupyterlab",
     "loguru",
-    "matplotlib",
-    "mkdocs",
-    "notebook",
-    "numpy",
-    "pandas",
     "pip",
     "pytest",
     "python-dotenv",
-    "scikit-learn",
-    "quickdraw",
-    "torch",
-    "torchvision",
     "tqdm",
     "typer",
+    "quickdraw (>=1.0.0,<2.0.0)",
+    "torch (>=2.8.0,<3.0.0)",
+    "torchvision (>=0.23.0,<0.24.0)",
+    "numpy (>=2.0,<2.3)",
+    "pandas (>=2.3.2,<3.0.0)",
+    "dotenv (>=0.9.9,<0.10.0)",
+    "pyyaml (>=6.0.2,<7.0.0)",
+    "matplotlib (>=3.10.6,<4.0.0)",
+    "mlflow (>=3.3.2,<4.0.0)",
 ]
-requires-python = "~=3.13.0"
+requires-python = "~=3.10.0"
 
 [tool.black]
 line-length = 99

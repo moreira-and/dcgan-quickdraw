@@ -1,121 +1,213 @@
-# dcgan-quickdraw
+# gan-lab-quickdraw
 
-<a target="_blank" href="https://cookiecutter-data-science.drivendata.org/">
-    <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
-</a>
-Implementation of a Deep Convolutional Generative Adversarial Network (DCGAN) to create synthetic images from Google’s Quick Draw dataset. This project explores adversarial training, dataset preprocessing, and critical evaluation of generative models.
-
-source: [google.quickdraw.coffee_cup](https://quickdraw.withgoogle.com/data/coffee_cup)
+Exploring GANs to generate synthetic images from Google Quick, Draw! (e.g., “coffee cup”). This repository is a lab/portfolio for MLOps and data science, covering data collection and processing, adversarial modeling, sample generation, experiment versioning with MLflow, and CI integration.
 
 ---
 
-## 🛠️ Prerequisites
+## Data Source
 
-* Python **3.13**
-* Updated `pip`:
+* [https://quickdraw.withgoogle.com/data/coffee\_cup](https://quickdraw.withgoogle.com/data/coffee_cup)
 
-  ```bash
-  python -m pip install --upgrade pip
-  ```
+## Template
 
----
-
-## 📦 Installation
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/moreira-and/quickdraw-gan-generator.git
-cd quickdraw-gan-generator
-```
-
-### 2. Create a virtual environment
-
-```bash
-python -m venv .venv
-```
-
-### 3. Activate the virtual environment
-
-* **Linux/macOS:**
-
-  ```bash
-  source .venv/bin/activate
-  ```
-
-* **Windows (CMD):**
-
-  ```cmd
-  .venv\Scripts\activate
-  ```
-
-* **Windows (PowerShell):**
-
-  ```powershell
-  .venv\Scripts\Activate.ps1
-  ```
-
-### 4. Install dependencies with `pip`
-
-This project uses `pyproject.toml` with the `flit` backend. To install it:
-
-```bash
-pip install -e .
-```
+* **Badge:** CCDS Template
+* [https://cookiecutter-data-science.drivendata.org/](https://cookiecutter-data-science.drivendata.org/)
 
 ---
 
+## Lab Goals
 
-## Project Organization
+* Learn and demonstrate DS/MLOps project best practices.
+* Train a simple DCGAN and generate synthetic images (class “coffee cup”).
+* Track experiments with MLflow (local and optional Docker server).
+* Ensure a minimum quality bar via tests and CI (GitHub Actions).
 
+---
+
+## Project Structure
+
+* `data/`: data at different stages.
+* `docs/`: additional documentation (optional mkdocs).
+* `mlflow-server/`: Docker environment for MLflow + Postgres + MinIO.
+* `mlruns/`: MLflow’s default local store (local tracking URI).
+* `models/`: trained artifacts (pkl/pth).
+* `notebooks/`: Jupyter notebooks (includes `quick_start.ipynb`).
+* `references/`: supporting materials.
+* `reports/`: generated outputs and figures.
+* `src/`: project source code.
+* `tests/`: automated tests (pytest).
+* `.github/workflows/ci.yaml`: CI pipeline (installs and runs tests).
+* `params.yaml`: hyperparameters (image size, epochs, etc.).
+* `Makefile`: automation targets (install, test, lint, format…).
+* `pyproject.toml`: project dependencies and config (Poetry/PEP 621).
+
+---
+
+## Requirements
+
+* Python 3.10
+* Poetry (environment and dependency management)
+* Git
+* Docker and Docker Compose (optional, for the MLflow server)
+* CUDA GPU (optional; speeds up training)
+
+---
+
+## Installation (Development Environment)
+
+```bash
+# 1) Clone the repository
+git clone https://github.com/moreira-and/gan-lab-quickdraw.git
+cd gan-lab-quickdraw
+
+# 2) Create/select the Poetry environment (Python 3.10)
+poetry env use 3.10
+
+# 3) Install dependencies
+poetry install
+
+# 4) (Optional) Activate Poetry shell
+poetry shell
+
+# 5) Validate installation (tests)
+poetry run pytest
 ```
-├── LICENSE            <- Open-source license if one is chosen
-├── Makefile           <- Makefile with convenience commands like `make data` or `make train`
-├── README.md          <- The top-level README for developers using this project.
-├── data
-│   ├── external       <- Data from third party sources.
-│   ├── interim        <- Intermediate data that has been transformed.
-│   ├── processed      <- The final, canonical data sets for modeling.
-│   └── raw            <- The original, immutable data dump.
-│
-├── docs               <- A default mkdocs project; see www.mkdocs.org for details
-│
-├── models             <- Trained and serialized models, model predictions, or model summaries
-│
-├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-│                         the creator's initials, and a short `-` delimited description, e.g.
-│                         `1.0-jqp-initial-data-exploration`.
-│
-├── pyproject.toml     <- Project configuration file with package metadata for 
-│                         scr and configuration for tools like black
-│
-├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-│
-├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-│   └── figures        <- Generated graphics and figures to be used in reporting
-│
-├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-│                         generated with `pip freeze > requirements.txt`
-│
-├── setup.cfg          <- Configuration file for flake8
-│
-└── scr   <- Source code for use in this project.
-    │
-    ├── __init__.py             <- Makes scr a Python module
-    │
-    ├── config.py               <- Store useful variables and configuration
-    │
-    ├── dataset.py              <- Scripts to download or generate data
-    │
-    ├── features.py             <- Code to create features for modeling
-    │
-    ├── modeling                
-    │   ├── __init__.py 
-    │   ├── predict.py          <- Code to run model inference with trained models          
-    │   └── train.py            <- Code to train models
-    │
-    └── plots.py                <- Code to create visualizations
+
+---
+
+## How to Run `quick_start.ipynb`
+
+The notebook orchestrates the full flow: download data, process features, train the DCGAN, generate a figure, and log artifacts to MLflow (local tracking by default).
+
+```bash
+# Launch Jupyter
+poetry run jupyter lab
+# or
+poetry run jupyter notebook
 ```
 
---------
+Open `notebooks/quick_start.ipynb` and run the cells in order.
 
+---
+
+## Pipeline Steps
+
+* **Load Raw Data:** downloads \~N “coffee cup” drawings from Quick, Draw! and saves them to `data/raw/coffee_cup`.
+* **Features:** transforms images into tensors (grayscale, resize) and saves them per class in `data/processed`.
+* **Model Training:** trains the DCGAN (hyperparams in `params.yaml`) and saves artifacts to `models/`.
+* **Generate:** produces a synthetic image and saves it to `reports/figures/generated_image.png`.
+* **Run Experiment:** logs artifacts and parameters to MLflow (local tracking in `mlruns/`).
+
+---
+
+## Expected Outputs
+
+* `data/raw/coffee_cup/`: downloaded PNGs.
+* `data/processed/<class>/`: `.pt` tensors per class.
+* `models/`: generator/discriminator artifacts.
+* `reports/figures/generated_image.png`: generated sample.
+* `mlruns/`: MLflow local directory (default tracking store).
+
+---
+
+## Parameters & Configuration
+
+* `params.yaml`: key hyperparameters (e.g., `dataset.batch_size`, `model.generator.latent_dim`, `train.epochs`).
+* `src/config.py`: project paths and MLflow default tracking URI at `mlruns/`.
+
+  > Note: by default, tracking is local (`mlruns`). To point to an external server, adjust the tracking URI in this file.
+
+---
+
+## Using MLflow
+
+### Option A — Local (default)
+
+* The code sets `mlflow.set_tracking_uri` to `mlruns/`.
+
+```bash
+poetry run mlflow ui --backend-store-uri mlruns --host 0.0.0.0 --port 5000
+# Access http://localhost:5000
+```
+
+### Option B — Server with Docker (Postgres + MinIO)
+
+1. Adjust variables in `mlflow-server/.env` if needed.
+2. Bring services up:
+
+```bash
+cd mlflow-server
+docker compose up -d
+```
+
+3. Access the UI at `http://localhost:5000`
+4. Point the project to the server (edit `src/config.py`):
+
+```python
+mlflow.set_tracking_uri("http://localhost:5000")
+```
+
+---
+
+## Continuous Integration (CI)
+
+* GitHub Actions pipeline in `.github/workflows/ci.yaml`.
+* Triggers: push and pull request to `main`.
+* Steps: checkout, setup Python **3.10.5**, install with Poetry, run pytest.
+
+---
+
+## Useful Commands (Makefile)
+
+```bash
+make requirements   # install dependencies (poetry install)
+make test           # run tests (pytest)
+make lint           # style checks (flake8, isort, black --check)
+make format         # format code (isort, black)
+make data           # download data via src/dataset.py
+```
+
+---
+
+## Detailed Folder Structure
+
+* `data/`
+
+  * `data/raw/`: original data (Quick, Draw!).
+  * `data/processed/`: transformed data (tensors per class).
+  * `data/interim/`, `data/external/`: reserved for other stages/sources.
+* `mlflow-server/`
+
+  * `mlflow-server/compose.yaml`: orchestrates Postgres, MinIO, and MLflow.
+  * `mlflow-server/.env`: config for credentials/ports/bucket.
+* `notebooks/`
+
+  * `notebooks/quick_start.ipynb`: end-to-end project flow.
+* `src/`
+
+  * `src/config.py`: sets paths, loads `params.yaml`, defines tracking URI.
+  * `src/dataset.py`: downloads and saves Quick, Draw! sketches.
+  * `src/features.py`: transforms and saves tensors per class.
+  * `src/modeling/`: models (Generator/Discriminator), training, and generation.
+  * `src/plots.py`: visualizations from processed data.
+* `tests/`: unit tests (e.g., `tests/test_noise.py`).
+* `.github/workflows/ci.yaml`: CI pipeline.
+
+---
+
+## Runtime & Performance Notes
+
+* Training: per `params.yaml` (**epochs=100** by default); GPU recommended.
+* Environment: project targets **Python >= 3.10** and uses Poetry; the notebook adds `src/` to `sys.path` automatically.
+
+---
+
+## License
+
+* MIT License (see `LICENSE`).
+
+---
+
+## Contact
+
+* This repository is part of my portfolio. Questions or suggestions are welcome via issues/PRs.

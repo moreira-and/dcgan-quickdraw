@@ -33,7 +33,9 @@ def main(
 
     for i, drawing in tqdm(enumerate(qd_group.drawings), desc="Saving drawings"):
         img = drawing.image
-        img.save(save_dir / f"{draw_name.replace(" ", "_")}_{i}.png")
+        safe = draw_name.replace(" ", "_")
+        img.save(save_dir / f"{safe}_{i}.png")
+
         if i >= max_drawings:
             break
 

@@ -1,0 +1,6 @@
+docker compose up -d
+# Verifique:
+docker compose ps
+# Acesse MLflow:
+#   UI:        http://localhost:5000
+#   MinIO:     http://localhost:9001 (console; login: MINIO_ROOT_USER/PASSWORD)

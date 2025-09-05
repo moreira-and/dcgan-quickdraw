@@ -9,6 +9,8 @@ from src.config import PROCESSED_DATA_DIR
 import torch
 import matplotlib.pyplot as plt
 
+import numpy as np
+
 app = typer.Typer()
 
 
@@ -28,13 +30,35 @@ def main():
         if img_file is None:
             continue
 
-        # Carrega o tensor
-        img_tensor = torch.load(img_file)  # [C, H, W]
+        img = torch.load(img_file)
 
-        # Converte para [H, W] e desfaz normalize [-1,1] → [0,1]
-        img = img_tensor.squeeze() * 0.5 + 0.5
-        # [C,H,W] → [H,W,C]
-        img_np = img.permute(1, 2, 0).numpy()
+        # Se vier esparso, densifica
+        if getattr(img, "layout", torch.strided) != torch.strided:
+            img = img.to_dense()
+
+        # Se vier batelada [B,C,H,W], pega o primeiro
+        if img.dim() == 4:
+            img = img[0]
+
+        # Garanta float
+        img = img.to(torch.float32)
+
+        # Desnormalização
+        # img = img.mul_(0.5).add_(0.5).clamp_(0, 1)
+
+        # Se for 2D (grayscale), recupere o canal
+        if img.dim() == 2:
+            img = img.unsqueeze(0)  # [1,H,W]
+
+        # CHW -> HWC
+        img = img.movedim(0, -1)
+
+        # Numpy seguro
+        img_np = img.detach().cpu().contiguous().numpy()
+
+        # Opcional: forçar 3 canais para plot/salvar
+        if img_np.shape[-1] == 1:
+            img_np = np.repeat(img_np, 3, axis=-1)
 
         plt.figure()
         plt.imshow(img_np, cmap="gray")

@@ -8,6 +8,10 @@ from loguru import logger
 
 # -----------------------------------------
 from dotenv import load_dotenv
+import os
+
+# -----------------------------------------
+import mlflow
 
 # -----------------------------------------
 import torch
@@ -35,6 +39,9 @@ REPORTS_DIR = PROJ_ROOT / "reports"
 FIGURES_DIR = REPORTS_DIR / "figures"
 
 CONFIG_FILE = PROJ_ROOT / "params.yaml"
+
+MLFLOW_TRACKING_URI = PROJ_ROOT / "mlruns"
+mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 
 
 # -----------------------------------------

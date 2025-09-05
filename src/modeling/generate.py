@@ -32,13 +32,13 @@ def main(
 
     discriminator_path = MODELS_DIR / discriminator_file
     generator_path = MODELS_DIR / generator_file
-
-    generator = Generator(params.model.latent_dim).to(device)
+    latent_dim = params.model.generator.latent_dim
+    generator = Generator(latent_dim).to(device)
 
     ## testando o gerador, ele deve produzir uma imagem ruidosa
     generator.eval()
     with torch.no_grad():
-        gen = generator(noise(batch_size, params.model.latent_dim).to(device))
+        gen = generator(noise(batch_size, latent_dim).to(device))
     plt.imshow(gen.cpu().squeeze().numpy(), cmap="gray")
     plt.savefig(FIGURES_DIR / figure_name)
 
